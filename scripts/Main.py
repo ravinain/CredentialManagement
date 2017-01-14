@@ -3,7 +3,7 @@ Created on Jan 7, 2017
 
 @author: cdacr
 '''
-from CredentialController import CredentialController
+from scripts.CredentialController import CredentialController
 
 class Main():
     '''
@@ -18,7 +18,7 @@ class Main():
         self.credentialController = CredentialController()
         
     def processRequest(self):
-        key = input("Please enter a key")
+        key = input("Please enter a key : ")
         while True:
             self.printOptions()
             option = int(input())
@@ -31,7 +31,7 @@ class Main():
                 print("Enter password: ")
                 password = input()
                 result = self.credentialController.addCredential(key, userName, password, title)
-                print("Result : {}".format(result))
+                print('Credentials has been added successfully!') if result else print('An error occurred. This might be duplicate credential!')
             elif option == 2:
                 print("Enter title: ")
                 title = input()
@@ -39,25 +39,27 @@ class Main():
                 userName = input()
                 print("Enter password: ")
                 password = input()
-                password = key + password
                 result = self.credentialController.updateCredential(key, userName, password, title)
-                print("Result : {}".format(result))
+                print('Credentials has been updated successfully!') if result else print('An error occurred. Please check whether credential exists or not!')
             elif option == 3:
                 print("Enter title: ")
                 title = input()
                 result = self.credentialController.getCredential(key, title)
-                print("Result : {}".format(result))
+                self.printGetResult(result)
             elif option == 4:
                 result = self.credentialController.getAllCredentials(key)
-                print("Result : {}".format(result))
+                self.printGetResult(result)
             elif option == 5:
-                result = self.credentialController.deleteCredential(key, title)
-                print("Result : {}".format(result))
+                print("Enter title: ")
+                title = input()
+                result = self.credentialController.deleteCredential(title)
+                print('Credentials has been deleted successfully!') if result else print('An error occurred. Please check whether credential exists or not!')
             elif option == 0:
                 print("Good bye!!!")
                 break
             else:
                 print("Incorrect option")
+            print('_'*90)
                 
     def printOptions(self):
         print("Please choose option:")
@@ -67,6 +69,17 @@ class Main():
         print("4: Search all credential")
         print("5: Delete credential")
         print("0: Exit")         
+        
+    def printGetResult(self, data):
+        print('_'*90)
+        print("{0:30} {1:30} {2:30}".format("Title", "User Name", "Password"))
+        print('-'*90)
+        if len(data) == 0:
+            print(repr('No credentials exists!').rjust(50, ' '))
+        else:
+            for d in data:
+                print("{0:30} {1:30} {2:30}".format(d['title'], d['userName'], d['password']))
+        print('_'*90)
         
 main = Main()
 main.processRequest()
