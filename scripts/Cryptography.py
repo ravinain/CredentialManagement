@@ -13,7 +13,7 @@ class Cryptography():
     '''
     classdocs
     '''
-
+    MAX_UNICODE = 1114111
 
     def __init__(self):
         '''
@@ -22,19 +22,34 @@ class Cryptography():
 
     def encode(self, key, clear):
         enc = []
+        key_num = 0
+        for i in range(len(key)):
+            key_num += ord(key[i])
+        logger.info('Total key_num {}'.format(key_num))
+        key_num = key_num % self.MAX_UNICODE
+        
         for i in range(len(clear)):
-            key_c = key[i % len(key)]
-            enc_c = chr((ord(clear[i]) + ord(key_c)) % 256)
+            enc_c = chr((ord(clear[i]) + key_num) % self.MAX_UNICODE)
             enc.append(enc_c)
-        logging.info("Encoded value {}".format(enc))
-        return base64.urlsafe_b64encode(''.join(format(ord(x), 'b') for x in enc))
+        
+        #encodedValue = base64.urlsafe_b64encode(bytes(''.join(enc), "utf-8"))
+        logger.info('Encrypted pwd {}'.format(''.join(enc)))
+        return ''.join(enc)
     
     def decode(self, key, enc):
         dec = []
-        enc = base64.urlsafe_b64decode(enc)
+        key_num = 0
+
+        for i in range(len(key)):
+            key_num += ord(key[i])
+        
+        key_num = key_num % self.MAX_UNICODE
+        
         for i in range(len(enc)):
-            key_c = key[i % len(key)]
-            dec_c = chr((256 + ord(enc[i]) - ord(key_c)) % 256)
+            if(key_num <= ord(enc[i])):
+                dec_c = chr(ord(enc[i]) - key_num)
+            else:
+                dec_c = chr(self.MAX_UNICODE + ord(enc[i]) - key_num)
             dec.append(dec_c)
-        logging.info("Decoded value {}".format(dec))
-        return "".join(dec)
+        logger.info('decrypted : {}'.format(dec))
+        return ''.join(dec)

@@ -8,6 +8,9 @@ import logging
 from scripts.CredentialRepo import CredentialRepo
 from scripts.Cryptography import Cryptography
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class CredentialService():
     '''
     CredentialService
@@ -43,6 +46,7 @@ class CredentialService():
         return credentials
     def getAllCredentials(self, key):
         credentials = self.credentialRepo.getAllCredentials()
+        
         for credential in credentials:
-            credential.password = self.cryptography.decode(key, credential['password'])
+            credential['password'] = self.cryptography.decode(key, credential['password'])
         return credentials

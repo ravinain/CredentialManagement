@@ -24,8 +24,10 @@ class CredentialRepo():
         self.query = Query()
     
     def addCredential(self, userName, password, title):
-        logging.info('User name and password is: {} {} {}'.format(userName, password, title))
-        self.db.insert({'userName':userName, 'password':password, 'title':title})
+        logging.info('User name, password and title is: {} {} {}'.format(userName, password, title))
+        insertObj = {'userName':userName, 'password':password, 'title':title}
+        logging.info('Before insert : {}'.format(insertObj))
+        self.db.insert(insertObj)
         count = self.db.count(self.query.title == title)
         return True if count == 1 else False
         
