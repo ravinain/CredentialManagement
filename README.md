@@ -8,7 +8,7 @@ This is a standalone application to store user name and password. It provides fo
  - Get All Credentials
  - Delete Credential by Title
 
-The application has in-memory database with only one table with three columns: User Name, Password and Title. Title is a key which is used to differentiate the credentials.
+The application is using in-memory database which has only one table and columns are: User Name, Password and Title. Title is a key which is used to differentiate the credentials.
 
 Sample Data:
 
