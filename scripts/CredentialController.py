@@ -20,19 +20,15 @@ class CredentialController():
         self.credentialService = CredentialService()
     
     def addCredential(self, key, userName, password, title):
-        logging.info('User name and password is: {} {} {}'.format(userName, password, title))
         return self.credentialService.addCredential(key, userName, password, title)
         
     def deleteCredential(self, title):
-        logging.info('Title is {}'.format(title))
         return self.credentialService.deleteCredential(title)
         
     def updateCredential(self, key, userName, password, title):
-        logging.info('update credential details: {} {} {}'.format(userName, password, title))
         return self.credentialService.updateCredential(key, userName, password, title)
         
     def getCredential(self, key, title):
-        logging.info('get credential for {} {}'.format(key, title))
         return self.credentialService.getCredential(key, title)
     def getAllCredentials(self, key):
         return self.credentialService.getAllCredentials(key)
